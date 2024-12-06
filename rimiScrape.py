@@ -107,7 +107,7 @@ try:
             except:
                 try:
                     # Gadījumi, kad ir atlaide izmantojot rimi karti
-                    card_deal = driver.find_element(By.CSS_SELECTOR, '.price-label__header img')
+                    card_deal = driver.find_element(By.CSS_SELECTOR, '.price-label__body img')
                     discount_info = 'Rimi karte'  # Set this as the value if the 'rimi_card' exists
                 except:
                     # Pārējie gadījumi
