@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <title>Liec Grozā</title>
+  </head>
+  <body>
+    <header>
+      <div class="hamburger" onclick="toggleSidebar()">☰</div>
+      <div class="title"><a href="/" class="no-link-style">LIEC GROZĀ</a></div>
+      <form method="GET" action="/">
+        <input
+          type="text"
+          name="search"
+          placeholder="Meklēt produktus..."
+          value="{{ search_query }}"
+        />
+        <button type="submit">Meklēt</button>
+      </form>
+        <div class="dropdown">
+          <button class="dropdown-btn">Filtrēt</button>
+          <div class="dropdown-content">
+            <label class="dropdown-item">
+              <input
+                type="checkbox"
+                name="filter"
+                value="Atlaide"
+                class="filter-checkbox"
+                {% if "Atlaide" in filters %}checked{% endif %}
+              />
+              Produkts ar atlaidi
+            </label>
+            <label class="dropdown-item">
+              <input
+                type="checkbox"
+                name="filter"
+                value="Rimi"
+                class="filter-checkbox"
+                {% if "Rimi" in filters %}checked{% endif %} 
+              />
+              Rimi produkcija
+            </label>
+            <label class="dropdown-item">
+              <input
+                type="checkbox"
+                name="filter"
+                value="Barbora"
+                class="filter-checkbox"
+                {% if "Barbora" in filters %}checked{% endif %} 
+              />
+              Barbora produkcija
+            </label>
+            <button id="apply-filters" class="dropdown-btn" style="margin-top: 10px;">Pielietot</button>
+          </div>
+        </div>
+        <select class="order-item" name="order" onchange="updateUrlWithSorting(this.value)">
+          <option value="none">Šķirot</option>
+          <option value="name_asc">Pēc nosaukuma A-Z</option>
+          <option value="name_desc">Pēc nosaukuma Z-A</option>
+          <option value="price_asc">Cena: Augoši</option>
+          <option value="price_desc">Cena: Dilstoši</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+      <button class="arr left" onclick="toggleSidebar()"><div></div></button>
+      <a href="/?category=Pakalpojumi">Pakalpojumi</a>
+      <a href="/?category=Svētkiem">Svētkiem</a>
+      <a href="/?category=Augļi un dārzeņi">Augļi un dārzeņi</a>
+      <a href="/?category=Vegānu">Vegāniem un veģetāriešiem</a>
+      <a href="/?category=Gaļa, zivis un gatavā kulinārija"
+        >Gaļa, zivis un gatavā kulinārija</a
+      >
+      <a href="/?category=Piena produkti un olas">Piena produkti un olas</a>
+      <a href="/?category=Maize un konditoreja"
+        >Maize un konditorejas izstrādājumi</a
+      >
+      <a href="/?category=Saldētā pārtika">Saldētā pārtika</a>
+      <a href="/?category=Iepakotā pārtika">Iepakotā pārtika</a>
+      <a href="/?category=Saldumi un uzkodas">Saldumi un uzkodas</a>
+      <a href="/?category=Dzērieni">Dzērieni</a>
+      <a href="/?category=Alkoholiskie dzērieni">Alkoholiskie dzērieni</a>
+      <a href="/?category=Vīns">Vīns</a>
+      <a href="/?category=Skaistumkopšanai un higiēnai"
+        >Skaistumkopšanai un higiēnai</a
+      >
+      <a href="/?category=Zīdaiņiem un bērniem">Zīdaiņiem un bērniem</a>
+      <a href="/?category=Sadzīves ķīmija">Sadzīves ķīmija</a>
+      <a href="/?category=Mājdzīvniekiem">Mājdzīvniekiem</a>
+      <a href="/?category=Mājai">Mājai, dārzam un atpūtai</a>
+    </div>
+
+    <div class="product-grid">
+      {% for product in products %}
+      <div class="product">
+        {% if product.lowest_price %}
+        <div class="lowest-price-container">
+          <img src="{{ product.lowest_price }}" alt="Lowest Price" class="lowest-price-logo">
+        </div>
+        {% endif %}
+        <div class="logo-container">
+          {% if product.store_id == 1 %}
+          <a href="https://www.rimi.lv/e-veikals" target="_blank">
+            <img src="{{ url_for('static', filename='images/rimi.png') }}" alt="Rimi Logo" class="store-logo">
+          </a>
+          {% elif product.store_id == 2 %}
+          <a href="https://www.barbora.lv" target="_blank">
+            <img src="{{ url_for('static', filename='images/barbora.png') }}" alt="Barbora Logo" class="store-logo">
+          </a>
+          {% endif %}
+        </div>
+        <img src="{{ product.image }}" alt="{{ product.name }}" />
+        <h2>{{ product.name }}</h2>
+        <p>Kategorija: {{ product.category }}</p>
+        {% if product.discount_price %}
+        <p><strong>Atlaides cena:</strong> €{{ product.discount_price }}</p>
+        <p><del>€{{ product.price }}</del></p>
+        {% elif product.old_price %}
+        <p><strong>Atlaides cena:</strong> €{{ product.price }}</p>
+        <p><del>€{{ product.old_price }}</del></p>
+        {% elif product.price %}
+        <p><strong>Cena:</strong> € {{ product.price }}</p>
+        {% else %}
+        <p><strong>Cena:</strong> Pašlaik nav pieejams</p>
+        {% endif %}
+        {% if product.discount_percentage %}
+        <div class="discount-badge">{{ product.discount_percentage }}</div>
+        {% endif %}
+        <a href="{{ product.url }}" target="_blank" class="view-product-btn">Apskatīt produktu</a>
+        <button class="price-history-btn" data-product-id="{{ product.id }}"  onclick="showPriceHistory(this.getAttribute('data-product-id'))">Cenu vēsture</button>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div id="priceHistoryModal" class="modal">
+      <div class="modal-content">
+          <div id="priceHistoryChart"></div>
+          <div class="modal-controls">
+              <select id="timeframeSelect" onchange="updatePriceHistory()">
+                  <option value="week">Nedēļa</option>
+                  <option value="month" selected>Mēnesis</option>
+                  <option value="year">Gads</option>
+                  <option value="lifetime">Viss laiks</option>
+              </select>
+              <button onclick="closeModal()">Aizvērt</button>
+          </div>
+      </div>
+  </div>
+
+    <div class="pagination">
+      {% if page > 1 %}
+      <a href="?search={{ search_query }}&category={{ category_type }}&order={{ order_by }}&page={{ page - 1 }}&filter={{ filters | join('&filter=') }}">&lt;</a>
+      {% endif %}
+
+      {% if page > 3 %}
+      <a href="?search={{ search_query }}&category={{ category_type }}&order={{ order_by }}&page=1&filter={{ filters | join('&filter=') }}">1</a>
+      <span>...</span>
+      {% endif %}
+
+      {% for p in range(page - 1, page + 2) if p > 0 and p <= total_pages %}
+      <a href="?search={{ search_query }}&category={{ category_type }}&order={{ order_by }}&page={{ p }}&filter={{ filters | join('&filter=') }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+      {% endfor %}
+
+      {% if page < total_pages - 2 %}
+      <span>...</span>
+      <a href="?search={{ search_query }}&category={{ category_type }}&order={{ order_by }}&page={{ total_pages }}&filter={{ filters | join('&filter=') }}">{{ total_pages }}</a>
+      {% endif %}
+
+      {% if page < total_pages %}
+      <a href="?search={{ search_query }}&category={{ category_type }}&order={{ order_by }}&page={{ page + 1 }}&filter={{ filters | join('&filter=') }}">&gt;</a>
+      {% endif %}
+  </div>
+  </body>
+</html>

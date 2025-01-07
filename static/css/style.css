@@ -1,0 +1,380 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  padding-top: 70px;
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #ac8968;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px;
+  color: #3e362e;
+  box-shadow: 0 7px 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  gap: 10px;
+}
+header .title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.no-link-style {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+header .title a:hover {
+  text-shadow: 2px 2px 7px rgba(0, 0, 0, 0.5);
+}
+header form {
+  flex-grow: 1;
+  min-width: 200px;
+  margin: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+header form input[type="text"] {
+  width: 33%;
+  min-width: 200px;
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+header form button {
+  padding: 5px 10px;
+  margin-left: 5px;
+  font-size: 1rem;
+  border: 1px solid #3e362e;
+  border-radius: 4px;
+  background-color: #865d36;
+  color: white;
+  cursor: pointer;
+}
+header .options {
+  display: flex;
+  gap: 10px;
+}
+header .options select {
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #865d36;
+  border: 1px solid #3e362e;
+}
+
+.order-item {
+  background-color: #865d36;
+  color: white;
+  border: 1px solid #3e362e;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn {
+  padding: 5px 10px;
+  margin: 5px 5px 5px 5px;
+  font-size: 1rem;
+  border: 1px solid #3e362e;
+  border-radius: 4px;
+  background-color: #865d36;
+  color: white;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ac8968;
+  color: #3e362e;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  border-radius: 4px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.dropdown-item input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+.hamburger {
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 250px;
+  height: 100%;
+  background-color: #ac8968;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  padding: 20px;
+  color: #3e362e;
+  z-index: 1000;
+}
+
+.sidebar.active {
+  left: 0;
+}
+
+.sidebar a {
+  display: block;
+  color: #3e362e;
+  text-decoration: none;
+  margin: 15px 0;
+  height: 1.8rem;
+  line-height: 1.8rem;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+.arr {
+  position: absolute;
+  background-color: white;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin: 15px;
+  right: 10px;
+}
+
+.arr:hover {
+  box-shadow: 0px 0px 20px 20px rgba(0, 0, 0, 0.1);
+}
+
+.arr div {
+  position: absolute;
+  height: 15px;
+  width: 15px;
+  border-top: 4px solid #3e362e;
+  border-left: 4px solid #3e362e;
+  transform: rotate(-45deg);
+  left: 12px;
+  top: 9px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px 10%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-top: 20px;
+  z-index: 1;
+}
+.product {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.logo-container {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.store-logo {
+  width: 100px;
+  height: auto;
+}
+
+.lowest-price-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+}
+
+.lowest-price-logo {
+  width: 40px;
+  height: auto;
+}
+
+.product img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+.product h2 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+}
+.product p {
+  margin: 5px 0;
+}
+.product a {
+  text-decoration: none;
+  color: white;
+}
+.discount-badge {
+  display: inline-block;
+  background-color: rgba(255, 255, 0, 0.6);
+  color: black;
+  padding: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.view-product-btn {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  padding: 5px 10px;
+  background-color: #865d36;
+  color: white;
+  border: 1px solid #3e362e;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.view-product-btn:hover {
+  background-color: #ac8968;
+}
+
+.product {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 15px;
+  padding-bottom: 50px;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 2000;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+}
+
+.price-history-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #865d36;
+  color: white;
+  border: 1px solid #3e362e;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.view-product-btn,
+.price-history-btn {
+  font-size: 0.9rem;
+}
+
+.price-history-btn:hover {
+  background-color: #ac8968;
+}
+
+.modal-controls {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-controls select {
+  padding: 5px;
+  border: 1px solid #3e362e;
+  border-radius: 4px;
+  background-color: #865d36;
+  color: white;
+}
+
+.modal-controls button {
+  padding: 5px 10px;
+  background-color: #865d36;
+  color: white;
+  border: 1px solid #3e362e;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.pagination a {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #3e362e;
+}
+
+.pagination a:hover {
+  background-color: #865d36;
+  color: white;
+}
+
+.pagination .active {
+  background-color: #865d36;
+  color: white;
+}
