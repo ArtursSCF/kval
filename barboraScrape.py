@@ -30,11 +30,12 @@ def save_to_database(product_details):
         cursor = conn.cursor()
         #Check if the product already exists in the product table
         cursor.execute(
-            "SELECT id FROM product WHERE url = %s FOR UPDATE", (product_details['url'],)
+            "SELECT id, write_date FROM product WHERE url = %s FOR UPDATE", (product_details['url'],)
         )
-        product_id = cursor.fetchone()
+        result = cursor.fetchone()
 
-        if product_id:
+        if result:
+            product_id = result[0]    
             #Move existing data to product_history
             cursor.execute("""
                 INSERT INTO product_history (
@@ -49,7 +50,7 @@ def save_to_database(product_details):
                     price_per, price_per_measure, discount_price,
                     discount_price_measure, discount_price_per,
                     discount_price_per_measure, discount_percentage,
-                    CURRENT_TIMESTAMP, store_id, id, is_active
+                    write_date, store_id, id, is_active
                 FROM product
                 WHERE id = %s
             """, (product_id,))
@@ -63,7 +64,8 @@ def save_to_database(product_details):
                     discount_price_measure = %s, discount_price_per = %s,
                     discount_price_per_measure = %s, discount_percentage = %s,
                     discount_info = %s, deal_notice = %s, image = %s,
-                    category = %s, category2 = %s, category3 = %s, is_active = %s
+                    category = %s, category2 = %s, category3 = %s, is_active = %s,
+                    write_date = CURRENT_TIMESTAMP
                 WHERE id = %s
             """, (
                 product_details['name'], product_details['product code'],
@@ -84,8 +86,8 @@ def save_to_database(product_details):
                     price_per, price_per_measure, discount_price, discount_price_measure, 
                     discount_price_per, discount_price_per_measure, discount_percentage, 
                     discount_info, deal_notice, image, category, category2, category3,
-                    is_active, store_id
-                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    is_active, store_id, write_date
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, CURRENT_TIMESTAMP)
             """, (
                 product_details['url'], product_details['name'], product_details['product code'],
                 product_details['price'], product_details['price measure'],
